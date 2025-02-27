@@ -1,0 +1,34 @@
+# 環境変数ファイル（APIキーなどの機密情報を含む）
+.env
+
+# Python関連
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# ログファイル
+*.log
+
+# 仮想環境
+venv/
+ENV/
+
+# その他
+.DS_Store
