@@ -1,159 +1,156 @@
 # Discord Gemini AI Bot
 
-A Discord bot that uses Google's Gemini AI to generate responses.
+Discordで動作するGoogle Gemini AIを活用したチャットボットです。
 
-## Features
+## 主な機能
 
-- Responds to direct mentions with AI-generated content
-- Provides a `!ask` command to ask questions to the AI
-- Handles long responses by splitting them into multiple messages
-- **Maintains conversation history** for context-aware responses
-- **Custom knowledge base** that allows users to teach the bot about specific topics
+- AIによる自然な会話応答
+- ウェブ検索機能による最新情報の提供
+- URLからの情報取得と学習
+- 会話履歴の保存と検索
+- カスタム知識ベースによる学習機能
+- PDFやテキストファイルからの学習機能
+- 短縮コマンド（エイリアス）対応
+- 画像分析機能
 
-## Setup Instructions
+## セットアップ手順
 
-### Prerequisites
+### 必要条件
 
-- Python 3.8 or higher
-- A Discord account and a registered Discord application/bot
-- A Google AI Studio account with access to the Gemini API
+- Python 3.8以上
+- Discordアカウントと登録済みのDiscordアプリケーション/ボット
+- Google AI Studioアカウント（Gemini APIへのアクセス権付き）
+- （オプション）Google Custom Search APIのアクセス権
 
-### Step 1: Get API Keys
+### ステップ1: APIキーの取得
 
 1. **Discord Bot Token**:
-   - Go to the [Discord Developer Portal](https://discord.com/developers/applications)
-   - Create a new application or select an existing one
-   - Go to the "Bot" tab and click "Add Bot"
-   - Under the "TOKEN" section, click "Copy" to copy your bot token
+   - [Discord Developer Portal](https://discord.com/developers/applications)にアクセス
+   - 新しいアプリケーションを作成または既存のものを選択
+   - 「Bot」タブで「Add Bot」をクリック
+   - 「TOKEN」セクションの「Copy」をクリックしてボットトークンをコピー
 
 2. **Gemini API Key**:
-   - Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
-   - Create a new API key or use an existing one
+   - [Google AI Studio](https://makersuite.google.com/app/apikey)にアクセス
+   - 新しいAPIキーを作成または既存のものを使用
 
-### Step 2: Configure the Bot
+3. **Google Custom Search API Key** (ウェブ検索機能用):
+   - [Google Cloud Console](https://console.cloud.google.com/)で「Custom Search JSON API」を有効化
+   - APIキーを作成
+   - [Programmable Search Engine](https://programmablesearchengine.google.com/about/)でカスタム検索エンジンを作成し、検索エンジンIDを取得
 
-1. Copy the `.env.example` file to a new file named `.env`:
+### ステップ2: ボットの設定
+
+1. `.env.example`ファイルを`.env`という名前の新しいファイルにコピー:
    ```
    cp .env.example .env
    ```
 
-2. Edit the `.env` file and replace the placeholder values with your actual API keys:
+2. `.env`ファイルを編集し、プレースホルダーの値を実際のAPIキーに置き換え:
    ```
-   DISCORD_TOKEN=your_discord_token_here
-   GEMINI_API_KEY=your_gemini_api_key_here
+   DISCORD_TOKEN=あなたのDiscordトークン
+   GEMINI_API_KEY=あなたのGemini APIキー
+   GOOGLE_API_KEY=あなたのGoogle APIキー
+   GOOGLE_CSE_ID=あなたの検索エンジンID
    ```
 
-### Step 3: Install Dependencies
+### ステップ3: 依存関係のインストール
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### Step 4: Invite the Bot to Your Server
+### ステップ4: ボットをサーバーに招待
 
-1. Go to the [Discord Developer Portal](https://discord.com/developers/applications)
-2. Select your application
-3. Go to the "OAuth2" tab and then "URL Generator"
-4. Select the following scopes:
+1. [Discord Developer Portal](https://discord.com/developers/applications)にアクセス
+2. アプリケーションを選択
+3. 「OAuth2」タブ→「URL Generator」へ
+4. 以下のスコープを選択:
    - `bot`
    - `applications.commands`
-5. Select the following bot permissions:
-   - "Send Messages"
-   - "Read Message History"
-   - "Add Reactions"
-   - "Use Slash Commands"
-6. Copy the generated URL and open it in your browser
-7. Select the server you want to add the bot to and follow the prompts
+5. 以下のボット権限を選択:
+   - 「メッセージを送信」
+   - 「メッセージ履歴を読む」
+   - 「リアクションを追加」
+   - 「スラッシュコマンドを使用」
+6. 生成されたURLをコピーしてブラウザで開く
+7. ボットを追加したいサーバーを選択し、指示に従う
 
-### Step 5: Run the Bot
+### ステップ5: ボットの実行
 
 ```bash
 python bot.py
 ```
 
-## Usage
+## 使用方法
 
-- Mention the bot in a message to get a response:
-  ```
-  @BotName What is the capital of Japan?
-  ```
+### 基本コマンド
 
-- Use the `!ask` command:
-  ```
-  !ask What is the capital of Japan?
-  ```
+- `!ask <質問>` または `!a <質問>` - AIに質問する
+- `!learn <情報>` または `!l <情報>` - 新しい知識をAIに教える
+- `!search <キーワード>` または `!s <キーワード>` - 知識ベースを検索する
+- `!forget` または `!f` - 会話履歴を忘れる
+- `!commands` または `!help` - 使用可能なコマンド一覧を表示
 
-### Learning Features
+### ウェブ検索と URL 関連
 
-The bot has a built-in learning system that allows it to remember conversations and learn new information:
+- `!search_web <検索クエリ>` または `!sw <検索クエリ>` - ウェブ検索を実行し、結果に基づいて回答する
+- `!learn_url <URL>` または `!lu <URL>` - 指定したURLの内容を学習する
+- `!ask_url <URL> <質問>` または `!au <URL> <質問>` - 指定したURLの内容について質問する
 
-#### Conversation Memory
+### 検索コマンド
 
-The bot remembers your conversation history to provide more context-aware responses. Commands:
+- `!search_messages <検索キーワード>` または `!sm <検索キーワード>` - チャンネル内のメッセージを検索する
+- `!search_history <検索キーワード>` または `!sh <検索キーワード>` - あなたの会話履歴を検索する
+- `!search_all <検索キーワード>` または `!sa <検索キーワード>` - チャンネルと会話履歴の両方を検索する
 
-- `!forget` - Makes the bot forget your conversation history
+### ファイル関連
 
-#### Custom Knowledge Base
+- `!learn_file` または `!lf` - 添付ファイルから学習する（PDFまたはテキストファイル）
 
-You can teach the bot about specific topics that it will remember and use in future conversations:
+### 画像分析
 
-- `!learn <topic> <information>` - Teach the bot about a specific topic
-  ```
-  !learn Tokyo Tokyo is the capital city of Japan with a population of over 13 million people.
-  ```
+- `!analyze_image [URL] [プロンプト]` または `!ai [URL] [プロンプト]` - Gemini 1.5 Flashモデルを使用して画像を分析する
+  - URLの代わりに画像を直接添付することも可能
+  - プロンプトを指定すると、特定の観点から画像を分析できます（例：「この画像に写っている建物の特徴を教えて」）
 
-- `!knowledge` - List all topics the bot knows about
-  ```
-  !knowledge
-  ```
+### 管理者コマンド
 
-- `!knowledge <topic>` - Get information about a specific topic
-  ```
-  !knowledge Tokyo
-  ```
+- `!forget_all` または `!fa` - すべての知識を忘れる（管理者のみ）
+- `!forget_topic <トピック>` または `!ft <トピック>` - 特定のトピックを忘れる
 
-- `!forget_topic <topic>` - Make the bot forget a specific topic
-  ```
-  !forget_topic Tokyo
-  ```
+## 学習機能
 
-When you ask a question that mentions a topic the bot has learned about, it will automatically include that knowledge in its response.
+このボットには会話を記憶し、新しい情報を学習するシステムが組み込まれています：
 
-## Classiスクレイパー機能
+### 会話メモリ
 
-このボットには、ベネッセの学校連絡サービス「Classi」から情報を自動的に取得し、ボットの知識ベースに追加する機能が含まれています。
+ボットはより文脈に沿った応答を提供するために会話履歴を記憶します。
 
-### セットアップ方法
+### カスタム知識ベース
 
-1. `.env`ファイルにClassiのログイン情報を追加します：
-   ```
-   CLASSI_USERNAME=あなたのClassiユーザー名
-   CLASSI_PASSWORD=あなたのClassiパスワード
-   ```
+特定のトピックについてボットに教えることができ、ボットはそれを記憶して将来の会話で使用します：
 
-2. 必要なライブラリをインストールします：
-   ```
-   pip install selenium webdriver-manager schedule beautifulsoup4
-   ```
+```
+!learn 東京 東京は日本の首都で、世界最大の都市圏の一つです。
+```
 
-3. Classiスクレイパーを実行します：
-   ```
-   python classi_scraper.py
-   ```
+### URLからの学習
 
-### 機能
+ウェブページの内容を取得して知識ベースに追加できます：
 
-- Classiのお知らせを定期的に（デフォルトでは6時間ごとに）取得します
-- 新しいお知らせを自動的にボットの知識ベースに追加します
-- ボットはこれらの情報を使って質問に回答できるようになります
+```
+!learn_url https://example.com/about-tokyo
+```
 
-### 注意事項
+### ファイルからの学習
 
-- このスクリプトはWebスクレイピングを使用していて、Classiのウェブサイト構造が変更された場合は動作しなくなる可能性があります
-- 学校や教育機関のポリシーに従って使用してください
-- 個人情報の取り扱いには十分注意してください
+PDFやテキストファイルをアップロードして、その内容をボットに学習させることができます：
 
-## Notes
+```
+!learn_file (ファイルを添付)
+```
 
-- The bot uses the Gemini Pro model, which has a knowledge cutoff date and may not have information about very recent events.
-- Responses are limited by Discord's message length limits (2000 characters), but the bot will automatically split longer responses into multiple messages.
+## ライセンス
+
+このプロジェクトはMITライセンスの下で公開されています。詳細については[LICENSE](LICENSE)ファイルを参照してください。

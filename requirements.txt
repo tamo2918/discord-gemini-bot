@@ -7,4 +7,6 @@ langchain-text-splitters
 selenium
 webdriver-manager
 schedule
+google-api-python-client
+requests
 beautifulsoup4
